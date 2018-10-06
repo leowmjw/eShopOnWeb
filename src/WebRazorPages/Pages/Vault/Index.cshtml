@@ -1,0 +1,32 @@
+@page
+<!-- @using System.Linq;
+@model IndexModel
+@{ 
+    ViewData["Title"] = "My Order History";
+} -->
+
+<div class="esh-orders">
+    <div class="container">
+        <!-- <h1>@ViewData["Title"]</h1> -->
+        <h1>MongoDB output here is cool ..</h1>
+        <article class="esh-orders-titles row">
+            <section class="esh-orders-title col-xs-2">Order number</section>
+            <section class="esh-orders-title col-xs-4">Date</section>
+            <section class="esh-orders-title col-xs-2">Total</section>
+            <section class="esh-orders-title col-xs-2">Status</section>
+            <section class="esh-orders-title col-xs-2"></section>
+        </article>
+
+        <article class="esh-orders-items row">
+          <section class="esh-orders-item col-xs-2">123456</section>
+          <section class="esh-orders-item col-xs-4">2018-10-01</section>
+          <section class="esh-orders-item col-xs-2">$ 5.00</section>
+          <section class="esh-orders-item col-xs-2">GOOD!</section>
+          <section class="esh-orders-item col-xs-1">
+            <a class="esh-orders-link" asp-page="Detail" asp-route-orderId="11">Detail</a>
+          </section>
+          <section class="esh-orders-item col-xs-1">
+          </section>
+        </article>
+    </div>
+</div>

@@ -28,5 +28,13 @@
           <section class="esh-orders-item col-xs-1">
           </section>
         </article>
+        @if (Model.Quotes != null)
+        {
+        <h2>Result</h2>
+                foreach (var vm in Model.Quotes)
+                {
+                    <p>@vm.Id</p>
+                }
+        }
     </div>
 </div>

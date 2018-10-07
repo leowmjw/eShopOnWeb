@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.eShopWeb.RazorPages.ViewModels;
 using Microsoft.eShopWeb.RazorPages.Services;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.RazorPages.Pages.Vault
 {
@@ -11,6 +13,8 @@ namespace Microsoft.eShopWeb.RazorPages.Pages.Vault
       // Actual quote from MongoDB
       public string Quote { get; private set;}
       private QuoteViewModelService _service;
+
+      public List<QuoteViewModel> Quotes { get; private set; }
 
       public IndexModel() 
       {
@@ -22,7 +26,7 @@ namespace Microsoft.eShopWeb.RazorPages.Pages.Vault
         }
       }
 
-      public async void OnGet()
+      public async Task OnGet()
       {
         // What to do here??
         // Call the QuoteiewModelService here .. but how?
@@ -33,7 +37,8 @@ namespace Microsoft.eShopWeb.RazorPages.Pages.Vault
         Quote = "{\"dude\":\"bob\"}";
 
         var viewModels = await _service.GetAllQuotes();
-
+        // Set it so can be accesible from templkate
+        Quotes = viewModels;
         Console.WriteLine("Items: " + viewModels.Count);
         foreach (var vm in viewModels)
         {

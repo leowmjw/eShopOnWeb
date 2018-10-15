@@ -33,7 +33,16 @@
         <h2>Result</h2>
                 foreach (var vm in Model.Quotes)
                 {
-                    <p>@vm.Id</p>
+                    <article class="esh-orders-items row">
+                        <section class="esh-orders-item col-xs-2">@vm.Id</section>
+                        <section class="esh-orders-item col-xs-4">@vm.Quote</section>
+                        <section class="esh-orders-item col-xs-2">$ 5.00</section>
+                        <section class="esh-orders-item col-xs-2">@vm.Name</section>
+                        <section class="esh-orders-item col-xs-1">
+                            <a class="esh-orders-link" asp-page="Detail" asp-route-orderId="@vm.Id">Detail</a>
+                        </section>
+                        <section class="esh-orders-item col-xs-1"></section>
+                    </article>
                 }
         }
     </div>

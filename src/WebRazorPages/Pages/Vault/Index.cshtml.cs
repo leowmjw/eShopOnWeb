@@ -42,8 +42,12 @@ namespace Microsoft.eShopWeb.RazorPages.Pages.Vault
         Console.WriteLine("Items: " + viewModels.Count);
         foreach (var vm in viewModels)
         {
-          Console.WriteLine("MODEL: " + vm.Id + ") " + vm.Name);
+          // for DEBUG
+          // Console.WriteLine("MODEL: " + vm.Id + ") " + vm.Name);
         }
+
+        // Try the connect on the 
+        _service.GetVaultConnection();
       }
     }
 }

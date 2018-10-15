@@ -35,6 +35,10 @@ namespace Microsoft.eShopWeb.RazorPages.Services
         }
       }
 
+      public void GetVaultConnection() 
+      {
+        Console.WriteLine("Starting access to Vault Server ...");
+      }
       // Naive implementation; without any async until is needed
       public async Task<List<QuoteViewModel>> GetAllQuotes() 
       {
@@ -49,7 +53,7 @@ namespace Microsoft.eShopWeb.RazorPages.Services
             // Console.WriteLine("RAW:" + JsonConvert.SerializeObject(json, Formatting.Indented));
             var myObject = JsonConvert.DeserializeObject<List<QuoteViewModel>>(json);
             // Double check ..
-            Console.WriteLine("OBJ:" + JsonConvert.SerializeObject(myObject, Formatting.Indented));
+            // Console.WriteLine("OBJ:" + JsonConvert.SerializeObject(myObject, Formatting.Indented));
             Console.WriteLine(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
             return myObject;
             // Fake returns 

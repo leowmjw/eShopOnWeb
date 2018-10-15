@@ -20,6 +20,7 @@ namespace Microsoft.eShopWeb.RazorPages.ViewModels
       public string Name { get; private set; }
 
       public QuoteViewModel() {
+        // test
       }
 
       public void FillStructFromJSON(string json) {

@@ -47,7 +47,13 @@ namespace Microsoft.eShopWeb.RazorPages.Pages.Vault
         }
 
         // Try the connect on the 
-        _service.GetVaultConnection();
+        Console.WriteLine("***********************************>");
+        var mongoConnectionURI = await _service.GetVaultConnection();
+        // Console.WriteLine("TRY1: " +  mongoConnectionURI);
+        Console.WriteLine("Connect to MongoDB using: ", mongoConnectionURI);
+        // Console.WriteLine("TRY2:" + await _service.GetVaultConnection());
+        // TODO: Now connect into data to get result; pass in the connection string?
+        Console.WriteLine("**********************************<");
       }
     }
 }

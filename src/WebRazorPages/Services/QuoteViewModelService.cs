@@ -12,6 +12,11 @@ using System.Linq;
 // using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+// For Vaullt
+using VaultSharp;
+using VaultSharp.V1.AuthMethods;
+using VaultSharp.V1.AuthMethods.GitHub;
+
 
 namespace Microsoft.eShopWeb.RazorPages.Services
 {
@@ -25,6 +30,7 @@ namespace Microsoft.eShopWeb.RazorPages.Services
       // https://github.com/fpetru/WebApiMongoDB
       private readonly string _quoteRepository = null;
       // private readonly ILogger<QuoteViewModelService> _logger;
+      private string _vaultClientToken = null;
 
       public QuoteViewModelService() 
       {
@@ -33,11 +39,71 @@ namespace Microsoft.eShopWeb.RazorPages.Services
         if (_quoteRepository == null) {
           // Do stuff here ,.
         }
+        if (_vaultClientToken == null) {
+            // TODO: Refactor token generation here?
+            // Pull from Redis persistent store later?
+            // can also have the trigger to get MongoDB URI?? Maybe later
+        }
       }
 
-      public void GetVaultConnection() 
+      // GetVaultConnection grabs the MongoDB connection string for data         
+      public async Task<string> GetVaultConnection() 
       {
+        var mongoConnectionURI = "";
         Console.WriteLine("Starting access to Vault Server ...");
+        var vaultAddr = Environment.GetEnvironmentVariable("VAULT_ADDR");
+        var personalAccessToken = Environment.GetEnvironmentVariable("GITHUB_PERSONAL_ACCESS_TOKEN");
+        if (vaultAddr != "" && personalAccessToken != "") {
+            // Check above; if null, what to do?
+            IAuthMethodInfo authMethod = new GitHubAuthMethodInfo(personalAccessToken);
+            var vaultClientSettings = new VaultClientSettings(vaultAddr, authMethod);
+            IVaultClient vaultClient = new VaultClient(vaultClientSettings);
+
+            // any operations done using the vaultClient will use the 
+            // vault token/policies mapped to the github token.
+            // NOTE: If ..LookupSelfAsync().Result; then it is synchronous
+            var tokRes = await vaultClient.V1.Auth.Token.LookupSelfAsync();
+            // foreach (var key in tokRes.Data.Metadata) {
+            //     Console.WriteLine("LEOWMJW TOKEN KEY:" + key + " META:" + tokRes.Data.Metadata.ToString());
+            // }
+            // DEBUG
+            // Console.WriteLine("RAW:" + JsonConvert.SerializeObject(tokRes, Formatting.Indented));
+
+            try {
+                // NOTE: If ..ReadSecretAsync(..).Result; then it is synchronous
+                var res = await vaultClient.V1.Secrets.KeyValue.V1.ReadSecretAsync("example/leowmjw");
+                // Use as per below; so much better ..
+                // DEBUG:
+                // Console.WriteLine("RAW:" + JsonConvert.SerializeObject(res, Formatting.Indented));
+                // The not so elegant way below :(
+                // Console.WriteLine("Found " + res.Data.Count + " item(s)");
+                foreach (var key in res.Data.Keys) {
+                    // Console.WriteLine("KEY:" + key + " VAL: " + res.Data.GetValueOrDefault(key));
+                    if (key == "uri") {
+                        mongoConnectionURI = (string) res.Data.GetValueOrDefault(key);
+                        // DEBUG:
+                        // Console.WriteLine("EXTRACTED: " + mongoConnectionURI);
+                        return mongoConnectionURI;
+                    }
+                }
+            } catch {
+                Console.WriteLine("DIE!!!!");
+            }
+
+            // Give it some time; now is OK; as it is async
+            // CreateAuthenticationProvider(authMethod, null);
+            var authInfo = authMethod.ReturnedLoginAuthInfo;
+            // Console.WriteLine("RAW:" + JsonConvert.SerializeObject(authInfo,Formatting.Indented));
+            Console.WriteLine("=========================");
+            _vaultClientToken = authInfo.ClientToken;
+            // DEBUG:
+            // Console.WriteLine("CACHED TOKEN: " + _vaultClientToken);
+
+        } else {
+            Console.WriteLine("Both VAULT_ADDR and GITHUB_PERSONAL_ACCESS_TOKEN needs to be defined!");
+        }
+
+        return mongoConnectionURI;
       }
       // Naive implementation; without any async until is needed
       public async Task<List<QuoteViewModel>> GetAllQuotes() 

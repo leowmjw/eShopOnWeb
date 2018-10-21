@@ -16,6 +16,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using VaultSharp;
 using VaultSharp.V1.AuthMethods;
 using VaultSharp.V1.AuthMethods.GitHub;
+// For MongoDB
+using MongoDB.Driver;
+using MongoDB.Bson;
 
 
 namespace Microsoft.eShopWeb.RazorPages.Services
@@ -31,6 +34,7 @@ namespace Microsoft.eShopWeb.RazorPages.Services
       private readonly string _quoteRepository = null;
       // private readonly ILogger<QuoteViewModelService> _logger;
       private string _vaultClientToken = null;
+      private MongoClient _mongoDBClient = null;
 
       public QuoteViewModelService() 
       {
@@ -105,6 +109,36 @@ namespace Microsoft.eShopWeb.RazorPages.Services
 
         return mongoConnectionURI;
       }
+
+      // Naive implementation using MongoDB as the data source 
+      public async Task GetAllQuotesFromMongoDB(string mongoConnectionURI) {
+          // Need to vaklidate mongoClkientURI??
+          if (_mongoDBClient == null) {
+            _mongoDBClient = new MongoClient(mongoConnectionURI);
+          }
+          Console.WriteLine("xxxxxxxxxxxxxxxxxxxxxxxxxxx");
+          // Get quotes DB ..
+          var db = _mongoDBClient.GetDatabase("cooljoe");
+          // db.GetCollection("quotes");
+          foreach (var colName in db.ListCollectionNames().ToList()) {
+            Console.WriteLine("COLLECTION: " + colName);
+          }
+          var myCollection =  db.GetCollection<BsonDocument>("quotes");
+          using (IAsyncCursor<BsonDocument> cursor = await myCollection.FindAsync(new BsonDocument()))
+          {
+             while (await cursor.MoveNextAsync())
+             {
+                IEnumerable<BsonDocument> batch = cursor.Current;
+                foreach (BsonDocument document in batch)
+                {
+                    Console.WriteLine(document);
+                    Console.WriteLine();
+                }
+            }
+          }
+            Console.WriteLine("xxxxxxxxxxxxxxxxxxxxxxxxxxx");
+      }
+
       // Naive implementation; without any async until is needed
       public async Task<List<QuoteViewModel>> GetAllQuotes() 
       {

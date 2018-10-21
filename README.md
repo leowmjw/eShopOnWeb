@@ -44,6 +44,7 @@ Install the VaultSharp deps for development as per below:
 ```
 # dotnet add package VaultSharp
 # dotnet add package Newtonsoft.Json
+# dotnet add package MongoDB.Driver
 ```
 
 ## Running the sample for Vault access 

@@ -50,9 +50,10 @@ namespace Microsoft.eShopWeb.RazorPages.Pages.Vault
         Console.WriteLine("***********************************>");
         var mongoConnectionURI = await _service.GetVaultConnection();
         // Console.WriteLine("TRY1: " +  mongoConnectionURI);
-        Console.WriteLine("Connect to MongoDB using: ", mongoConnectionURI);
+        Console.WriteLine("Connect to MongoDB using: " +  mongoConnectionURI);
         // Console.WriteLine("TRY2:" + await _service.GetVaultConnection());
         // TODO: Now connect into data to get result; pass in the connection string?
+        _service.GetAllQuotesFromMongoDB(mongoConnectionURI);
         Console.WriteLine("**********************************<");
       }
     }

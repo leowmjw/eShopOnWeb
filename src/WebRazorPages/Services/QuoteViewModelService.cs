@@ -19,6 +19,8 @@ using VaultSharp.V1.AuthMethods.GitHub;
 // For MongoDB
 using MongoDB.Driver;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+// using MongoDB.Bson.Serialization.Attributes;
 
 
 namespace Microsoft.eShopWeb.RazorPages.Services
@@ -111,7 +113,7 @@ namespace Microsoft.eShopWeb.RazorPages.Services
       }
 
       // Naive implementation using MongoDB as the data source 
-      public async Task GetAllQuotesFromMongoDB(string mongoConnectionURI) {
+      public async Task<List<QuoteViewModelMongoDB>> GetAllQuotesFromMongoDB(string mongoConnectionURI) {
           // Need to vaklidate mongoClkientURI??
           if (_mongoDBClient == null) {
             _mongoDBClient = new MongoClient(mongoConnectionURI);
@@ -123,20 +125,28 @@ namespace Microsoft.eShopWeb.RazorPages.Services
           foreach (var colName in db.ListCollectionNames().ToList()) {
             Console.WriteLine("COLLECTION: " + colName);
           }
-          var myCollection =  db.GetCollection<BsonDocument>("quotes");
-          using (IAsyncCursor<BsonDocument> cursor = await myCollection.FindAsync(new BsonDocument()))
-          {
-             while (await cursor.MoveNextAsync())
-             {
-                IEnumerable<BsonDocument> batch = cursor.Current;
-                foreach (BsonDocument document in batch)
-                {
-                    Console.WriteLine(document);
-                    Console.WriteLine();
-                }
-            }
-          }
-            Console.WriteLine("xxxxxxxxxxxxxxxxxxxxxxxxxxx");
+
+          var myCollection =  db.GetCollection<QuoteViewModelMongoDB>("quotes");
+          return  await myCollection.Find(new BsonDocument()).ToListAsync();
+          //   var json = myCollection.ToJson();
+          // DEBUG:
+          // Console.WriteLine("RAW_JSON:" + json);
+
+          // Below for DEBUG
+        //   using (IAsyncCursor<BsonDocument> cursor = await myCollection.FindAsync(new BsonDocument()))
+        //   {
+        //      while (await cursor.MoveNextAsync())
+        //      {
+        //         IEnumerable<BsonDocument> batch = cursor.Current;
+        //         foreach (BsonDocument document in batch)
+        //         {
+        //             Console.WriteLine(document);
+        //             Console.WriteLine();
+        //         }
+        //     }
+        //   }
+        //     Console.WriteLine("xxxxxxxxxxxxxxxxxxxxxxxxxxx");
+        //     return null;
       }
 
       // Naive implementation; without any async until is needed

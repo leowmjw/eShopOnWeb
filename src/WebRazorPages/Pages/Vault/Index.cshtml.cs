@@ -16,6 +16,9 @@ namespace Microsoft.eShopWeb.RazorPages.Pages.Vault
 
       public List<QuoteViewModel> Quotes { get; private set; }
 
+      // Quotes not from fake JSOn; rather from MongoDB Object ..
+      public List<QuoteViewModelMongoDB> QuotesMongoDB { get; private set; }
+
       public IndexModel() 
       {
         // What to store here??
@@ -53,7 +56,15 @@ namespace Microsoft.eShopWeb.RazorPages.Pages.Vault
         Console.WriteLine("Connect to MongoDB using: " +  mongoConnectionURI);
         // Console.WriteLine("TRY2:" + await _service.GetVaultConnection());
         // TODO: Now connect into data to get result; pass in the connection string?
-        _service.GetAllQuotesFromMongoDB(mongoConnectionURI);
+        QuotesMongoDB = await _service.GetAllQuotesFromMongoDB(mongoConnectionURI);
+        if (QuotesMongoDB != null) {
+          Console.WriteLine("MongoDB Collection COUNT: " + QuotesMongoDB.Count);
+        }
+        foreach (var vm in QuotesMongoDB)
+        {
+          // for DEBUG
+          Console.WriteLine("MODEL: " + vm.Quote + ") " + vm.Name);
+        }
         Console.WriteLine("**********************************<");
       }
     }

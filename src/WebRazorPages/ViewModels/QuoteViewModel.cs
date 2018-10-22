@@ -1,7 +1,26 @@
 using Newtonsoft.Json;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Microsoft.eShopWeb.RazorPages.ViewModels
 {
+
+    [BsonIgnoreExtraElements]
+      public class QuoteViewModelMongoDB
+    {
+      [BsonId]
+      [BsonElement("_id")]
+      public int Id {  get; private set; }
+      // Actual quote from MongoDB
+      [BsonElement("quote")]
+      public string Quote {  get;  private set; }
+
+      // property is needed to match non-case
+      [BsonElement("name")]
+      // private set is needed otherwise cannot serialize
+      public string Name { get; private set; }
+    }
+    // Ignore the extra stuff ..
     public class QuoteViewModel
     {
       // Running number from MongoDB for quote Item ..

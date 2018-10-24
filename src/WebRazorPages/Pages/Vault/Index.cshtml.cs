@@ -63,7 +63,7 @@ namespace Microsoft.eShopWeb.RazorPages.Pages.Vault
         foreach (var vm in QuotesMongoDB)
         {
           // for DEBUG
-          Console.WriteLine("MODEL: " + vm.Quote + ") " + vm.Name);
+          Console.WriteLine("MODEL: " + vm.Name + ") " + vm.Quote);
         }
         Console.WriteLine("**********************************<");
       }

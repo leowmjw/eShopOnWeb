@@ -45,5 +45,26 @@
                     </article>
                 }
         }
+        </div>
+        <div class="container">
+        <!-- Start from MongoDB -->
+        @if (Model.QuotesMongoDB != null) {
+        <h2>MongoDB Result</h2>
+                foreach (var vm in Model.QuotesMongoDB)
+                {
+                    <article class="esh-orders-items row">
+                        <!-- <section class="esh-orders-item col-xs-2">ID#</section> -->
+                        <section class="esh-orders-item col-xs-4">@vm.Quote</section>
+                        <!-- <section class="esh-orders-item col-xs-2">$ 5.00</section> -->
+                        <section class="esh-orders-item col-xs-2">@vm.Name</section>
+                        <!-- <section class="esh-orders-item col-xs-1">
+                            <a class="esh-orders-link" asp-page="Detail">Detail</a>
+                        </section> -->
+                        <section class="esh-orders-item col-xs-1"></section>
+                    </article>
+                }
+        } else {
+            <p>FOUND NOTHING!!</p>
+        }
     </div>
 </div>

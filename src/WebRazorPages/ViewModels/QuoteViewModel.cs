@@ -8,9 +8,6 @@ namespace Microsoft.eShopWeb.RazorPages.ViewModels
     [BsonIgnoreExtraElements]
       public class QuoteViewModelMongoDB
     {
-      [BsonId]
-      [BsonElement("_id")]
-      public int Id {  get; private set; }
       // Actual quote from MongoDB
       [BsonElement("quote")]
       public string Quote {  get;  private set; }

@@ -106,6 +106,10 @@ namespace Microsoft.eShopWeb.RazorPages
             // Add memory cache services
             services.AddMemoryCache();
 
+            // Add our custom demo service; see if it registers; use singleton so only one 
+            // copy (per machine)
+            services.AddSingleton<QuoteViewModelService, QuoteViewModelService>();
+
             services.AddMvc()
                 .SetCompatibilityVersion(AspNetCore.Mvc.CompatibilityVersion.Version_2_1)
                 .AddRazorPagesOptions(options =>

@@ -1,5 +1,64 @@
 # eShopOnWeb
 
+## Running sample JSON endpoints
+In order to run with the sample to access, run the dev mode:
+```
+leow$ pwd --> /Users/leow/DOTNETCORE-DEVCON/ESHOPDEMO/src/WebRazorPages
+cd ./src/WebRazorPages
+
+# For dev run ..
+leow$ dotnet watch -- run .
+
+# For prod run
+leow$ dotnet run .
+Using launch settings from /Users/leow/DOTNETCORE-DEVCON/ESHOPDEMO/src/WebRazorPages/Properties/launchSettings.json...
+info: Microsoft.EntityFrameworkCore.Infrastructure[10403]
+      Entity Framework Core 2.1.4-rtm-31024 initialized 'CatalogContext' using provider 'Microsoft.EntityFrameworkCore.InMemory' with options: StoreName=Catalog
+info: Microsoft.EntityFrameworkCore.Update[30100]
+      Saved 5 entities to in-memory store.
+info: Microsoft.EntityFrameworkCore.Update[30100]
+      Saved 4 entities to in-memory store.
+info: Microsoft.EntityFrameworkCore.Update[30100]
+      Saved 12 entities to in-memory store.
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[0]
+      User profile is available. Using '/Users/leow/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+info: Microsoft.EntityFrameworkCore.Infrastructure[10403]
+      Entity Framework Core 2.1.4-rtm-31024 initialized 'AppIdentityDbContext' using provider 'Microsoft.EntityFrameworkCore.InMemory' with options: StoreName=Identity
+info: Microsoft.EntityFrameworkCore.Update[30100]
+      Saved 1 entities to in-memory store.
+Hosting environment: Development
+Content root path: /Users/leow/DOTNETCORE-DEVCON/ESHOPDEMO/src/WebRazorPages
+Now listening on: http://0.0.0.0:5107
+Application started. Press Ctrl+C to shut down.
+
+```
+
+Demo for Vault:
+```
+http://0.0.0.0:5107/vault
+```
+
+## Installing prereqs
+
+Install the VaultSharp deps for development as per below:
+```
+# dotnet add package VaultSharp
+# dotnet add package Newtonsoft.Json
+# dotnet add package MongoDB.Driver
+```
+
+## Running the sample for Vault access 
+```
+leow$ pwd
+/Users/leow/DOTNETCORE-DEVCON/ESHOPDEMO/src/WebRazorPages
+leow$ dotnet watch -- run .
+```
+
+## Running the sample to get data from MongoDB using the Vault access credentials
+```
+
+```
+
 Sample ASP.NET Core reference application, powered by Microsoft, demonstrating a single-process (monolithic) application architecture and deployment model. 
 
 This reference application is meant to support the free .PDF download ebook: [Architecting Modern Web Applications with ASP.NET Core and Azure](https://aka.ms/webappebook), updated to **ASP.NET Core 2.1**.
